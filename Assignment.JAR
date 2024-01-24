@@ -1,0 +1,202 @@
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
+/**
+ * Abstract class representing a geometric shape.
+ */
+abstract class CShape {
+
+    private static int nextId = 1;
+    protected int id;
+
+    /**
+     * Constructs a shape and assigns a unique ID.
+     */
+    public CShape() {
+        this.id = nextId++;
+    }
+
+    /**
+     * Gets the type of the shape.
+     *
+     * @return The type of the shape, such as "RECTANGLE" or "CIRCLE".
+     */
+    public abstract String getType();
+
+    /**
+     * Gets the dimensions of the shape.
+     *
+     * @return A string representation of the shape's dimensions.
+     */
+    public abstract String getDimensions();
+}
+
+/**
+ * Class representing a canvas containing a collection of shapes.
+ */
+class CCanvas {
+
+    private List<CShape> shapes;
+
+    /**
+     * Constructs a canvas and generates a collection of 10 random shapes.
+     */
+    public CCanvas() {
+        this.shapes = new ArrayList<>();
+        generateRandomShapes();
+    }
+
+    private void generateRandomShapes() {
+        Random random = new Random();
+
+        while (shapes.size() < 10) {
+            int choice = random.nextInt(4);
+
+            switch (choice) {
+                case 0:
+                    shapes.add(new CCircle(random.nextInt(100) + 1));
+                    break;
+                case 1:
+                    shapes.add(new COval(random.nextInt(100) + 1, random.nextInt(100) + 1));
+                    break;
+                case 2:
+                    shapes.add(new CSquare(random.nextInt(100) + 1));
+                    break;
+                case 3:
+                    shapes.add(new CRectangle(random.nextInt(100) + 1, random.nextInt(100) + 1));
+                    break;
+            }
+        }
+    }
+
+    /**
+     * Displays the shapes present on the canvas.
+     */
+    public void displayShapes() {
+        System.out.println("Canvas has the following random shapes:\n");
+
+        for (int i = 0; i < shapes.size(); i++) {
+            CShape shape = shapes.get(i);
+            System.out.println("Shape " + shape.id + ": " + shape.getType() + " " + shape.getDimensions());
+        }
+    }
+}
+
+/**
+ * Class representing an oval, a specific type of shape with horizontal and vertical radii.
+ */
+class COval extends CShape {
+
+    private int horizontalRadius;
+    private int verticalRadius;
+
+    /**
+     * Constructs an oval with the specified horizontal and vertical radii.
+     *
+     * @param horizontalRadius The horizontal radius of the oval.
+     * @param verticalRadius   The vertical radius of the oval.
+     */
+    public COval(int horizontalRadius, int verticalRadius) {
+        super();
+        this.horizontalRadius = horizontalRadius;
+        this.verticalRadius = verticalRadius;
+    }
+
+    @Override
+    public String getType() {
+        return "OVAL";
+    }
+
+    @Override
+    public String getDimensions() {
+        return horizontalRadius + "x" + verticalRadius;
+    }
+}
+
+/**
+ * Class representing a circle, a specific type of oval with equal horizontal and vertical radii.
+ */
+class CCircle extends COval {
+
+    /**
+     * Constructs a circle with the specified radius.
+     *
+     * @param radius The radius of the circle.
+     */
+    public CCircle(int radius) {
+        super(radius, radius);
+    }
+
+    @Override
+    public String getType() {
+        return "CIRCLE";
+    }
+}
+
+/**
+ * Class representing a rectangle, a specific type of shape with length and width.
+ */
+class CRectangle extends CShape {
+
+    private int length;
+    private int width;
+
+    /**
+     * Constructs a rectangle with the specified length and width.
+     *
+     * @param length The length of the rectangle.
+     * @param width  The width of the rectangle.
+     */
+    public CRectangle(int length, int width) {
+        super();
+        this.length = length;
+        this.width = width;
+    }
+
+    @Override
+    public String getType() {
+        return "RECTANGLE";
+    }
+
+    @Override
+    public String getDimensions() {
+        return length + "x" + width;
+    }
+}
+
+/**
+ * Class representing a square, a specific type of rectangle with equal length and width.
+ */
+class CSquare extends CRectangle {
+
+    /**
+     * Constructs a square with the specified side length.
+     *
+     * @param side The side length of the square.
+     */
+    public CSquare(int side) {
+        super(side, side);
+    }
+
+    @Override
+    public String getType() {
+        return "SQUARE";
+    }
+}
+
+/**
+ * Main class for demonstrating the canvas and shapes.
+ */
+public class Main {
+
+    /**
+     * The main method creates a canvas, generates random shapes, and displays them on the canvas.
+     *
+     * @param args The command-line arguments (not used).
+     */
+    public static void main(String[] args) {
+        CCanvas canvas = new CCanvas();
+        canvas.displayShapes();
+    }
+}
